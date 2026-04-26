@@ -8,7 +8,7 @@ REMOTE_LISTS_FILE = "remote-lists.txt"
 CUSTOM_RULES_FILE = "custom-rules.txt"
 TEMP_JSON_FILE = "temp_rules.json"
 OUTPUT_SRS_FILE = "block_rules.srs"
-SHADOWROCKET_FILE = "shadowrocket_rules.list"
+SHADOWROCKET_FILE = "shadowrocket_rules.conf"
 SING_BOX_EXEC = "./sing-box"
 
 # Use a set to automatically deduplicate domains
@@ -80,9 +80,7 @@ def main():
     # 3. Format and export Shadowrocket rules
     print(f"Generating Shadowrocket rules: {SHADOWROCKET_FILE}")
     with open(SHADOWROCKET_FILE, "w", encoding="utf-8") as f:
-        f.write("# Shadowrocket Blocking Rules\n")
-        f.write(f"# Total Domains: {len(domains)}\n")
-        # Sorting isn't strictly necessary for Shadowrocket, but it makes the list cleaner
+        f.write("[Rule]\n")
         for domain in sorted(domains):
             f.write(f"DOMAIN-SUFFIX,{domain},REJECT\n")
     print(f"Success! {SHADOWROCKET_FILE} has been created.")
