@@ -1,0 +1,18 @@
+! --- Windows Update Core Servers ---
+||windowsupdate.microsoft.com^
+||update.microsoft.com^
+||windowsupdate.com^
+! --- Specific Update Delivery Servers ---
+||download.windowsupdate.com^
+||sls.update.microsoft.com^
+||fe2cr.update.microsoft.com^
+||v4.windowsupdate.microsoft.com^
+||wustat.windows.com^
+||ntservicepack.microsoft.com^
+! --- Delivery Optimization (Peer-to-Peer) ---
+||do.dsp.mp.microsoft.com^
+||fe3cr.delivery.mp.microsoft.com^
+||tsfe.trafficshaping.dsp.mp.microsoft.com^
+||geo-prod.do.dsp.mp.microsoft.com^
+||time.wasu.tv^$important
+
