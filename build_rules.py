@@ -3,11 +3,12 @@ import urllib.request
 import subprocess
 import os
 
-# File paths based on your current directory
+# File paths
 REMOTE_LISTS_FILE = "remote-lists.txt"
 CUSTOM_RULES_FILE = "custom-rules.txt"
 TEMP_JSON_FILE = "temp_rules.json"
 OUTPUT_SRS_FILE = "block_rules.srs"
+SHADOWROCKET_FILE = "shadowrocket_rules.list"
 SING_BOX_EXEC = "./sing-box"
 
 # Use a set to automatically deduplicate domains
@@ -76,7 +77,17 @@ def main():
         print("No domains found. Exiting.")
         return
 
-    # 3. Format as Sing-box v3 JSON
+    # 3. Format and export Shadowrocket rules
+    print(f"Generating Shadowrocket rules: {SHADOWROCKET_FILE}")
+    with open(SHADOWROCKET_FILE, "w", encoding="utf-8") as f:
+        f.write("# Shadowrocket Blocking Rules\n")
+        f.write(f"# Total Domains: {len(domains)}\n")
+        # Sorting isn't strictly necessary for Shadowrocket, but it makes the list cleaner
+        for domain in sorted(domains):
+            f.write(f"DOMAIN-SUFFIX,{domain},REJECT\n")
+    print(f"Success! {SHADOWROCKET_FILE} has been created.")
+
+    # 4. Format as Sing-box v3 JSON
     print(f"Writing to temporary JSON: {TEMP_JSON_FILE}")
     ruleset = {
         "version": 3,
@@ -90,7 +101,7 @@ def main():
     with open(TEMP_JSON_FILE, "w", encoding="utf-8") as f:
         json.dump(ruleset, f)
 
-    # 4. Compile into binary using local sing-box
+    # 5. Compile into binary using local sing-box
     print(f"Compiling binary rule-set: {OUTPUT_SRS_FILE}")
     try:
         subprocess.run(
@@ -98,12 +109,12 @@ def main():
             check=True
         )
         print(f"Success! {OUTPUT_SRS_FILE} has been created.")
-    except subprocess.CalledProcessError as e:
+    except subprocess.CalledProcessError:
         print(f"  [!] Compilation failed: Sing-box returned an error.")
     except FileNotFoundError:
         print(f"  [!] '{SING_BOX_EXEC}' executable not found in the current directory.")
 
-    # 5. Clean up temporary JSON file
+    # 6. Clean up temporary JSON file
     if os.path.exists(TEMP_JSON_FILE):
         os.remove(TEMP_JSON_FILE)
         print("Cleaned up temporary files.")
