@@ -14,5 +14,5 @@
 ||fe3cr.delivery.mp.microsoft.com^
 ||tsfe.trafficshaping.dsp.mp.microsoft.com^
 ||geo-prod.do.dsp.mp.microsoft.com^
-||time.wasu.tv^$important
+||time.wasu.tv^
 
